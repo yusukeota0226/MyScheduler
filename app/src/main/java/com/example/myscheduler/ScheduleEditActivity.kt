@@ -18,20 +18,23 @@ class ScheduleEditActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_schedule_edit)
-        realm.executeTransaction {
-            val maxId = realm.where<Schedule>().max("id")
-            val nextId = (maxId?.toLong() ?: 0L) + 1
-            val schedule = realm.createObject<Schedule>(nextId)
-            dateEdit.text.toString().toDate("yyyy/MM/dd")?.let{
-                schedule.date = it
+
+        save.setOnClickListener {
+//            setContentView(R.layout.activity_schedule_edit)
+            realm.executeTransaction {
+                val maxId = realm.where<Schedule>().max("id")
+                val nextId = (maxId?.toLong() ?: 0L) + 1
+                val schedule = realm.createObject<Schedule>(nextId)
+                dateEdit.text.toString().toDate("yyyy/MM/dd")?.let{
+                    schedule.date = it
+                }
+                schedule.title = titleEdit.text.toString()
+                schedule.detail = detailEdit.text.toString()
             }
-            schedule.title = titleEdit.text.toString()
-            schedule.detail = detailEdit.text.toString()
+            alert("追加しました") {
+                yesButton { finish() }
+            }.show()
         }
-        alert("追加しました") {
-            yesButton { finish() }
-        }.show()
     }
 
     override fun onDestroy() {
@@ -42,7 +45,7 @@ class ScheduleEditActivity : AppCompatActivity() {
     fun String.toDate(pattern: String = "yyyy/MM/dd HH:mm"): Date? {
         val sdFormat = try{
             SimpleDateFormat(pattern)
-        }catch (e: IllegalArgumentException){
+        } catch (e: IllegalArgumentException){
             null
         }
         val date = sdFormat?.let {

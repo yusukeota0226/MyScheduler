@@ -5,9 +5,12 @@ import android.widget.TextView
 import com.example.myscheduler.Schedule
 import io.realm.OrderedRealmCollection
 import io.realm.RealmBaseAdapter
-import java.text.DateFormat
+import android.text.format.DateFormat
 
-class ScheduleAdapter(data: OrderedRealmCollection<Schedule>?) : RealmBaseAdapter<Schedule>(data) {
+
+class ScheduleAdapter(data: OrderedRealmCollection<Schedule>?) :
+        RealmBaseAdapter<Schedule>(data) {
+
     inner class ViewHolder(cell: View){
         var date = cell.findViewById<TextView>(android.R.id.text1)
         var title = cell.findViewById<TextView>(android.R.id.text2)
@@ -30,14 +33,14 @@ class ScheduleAdapter(data: OrderedRealmCollection<Schedule>?) : RealmBaseAdapte
             }
         }
 
-//        adapterData?.run {
-//            val schedule = get(position)
-//            viewHolder.date.text =
-//                DateFormat.format("yyyy/MM/dd", schedule.date)
-////                    DateFormat.format("yyyy/MM/dd", schedule.date)
-////            dateText.setText(android.text.format.DateFormat.format("yyyy/MM/dd", c ))
-//            viewHolder.title.text = schedule.title
-//        }
+        adapterData?.run {
+            val schedule = get(position)
+            viewHolder.date.text =
+                DateFormat.format("yyyy/MM/dd", schedule.date)
+//                    DateFormat.format("yyyy/MM/dd", schedule.date)
+//            dateText.setText(android.text.format.DateFormat.format("yyyy/MM/dd", c ))
+            viewHolder.title.text = schedule.title
+        }
         return view
     }
 
